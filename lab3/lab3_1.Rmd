@@ -57,10 +57,14 @@ What are the dimensions of the `hbirds` data frame? The `dim()` and `str()` comm
 ```{r}
 dim(hbirds)
 ```
+```{r}
+?str()
+```
 
 ```{r}
 str(hbirds)
 ```
+str() help us to get a brief sense about what we have in a data frame
 
 Let's use lowercase names when we create the data frame. We just changed to lowercase here, but we could use any names we wish.  
 ```{r}
@@ -88,6 +92,9 @@ hbirds[ ,3]
 We can also select values in an entire column using the `$` sign. This can be useful for calculations. Here we calculate the mean of all of the birds weights. 
 ```{r}
 w <- hbirds$weight_oz
+w
+```
+```{r}
 mean(w)
 ```
 
@@ -105,6 +112,13 @@ hbirds
 
 ## Adding Columns
 What if we come across more data and we want to add it to our data frame? We can also do that with the `$` operator.
+
+or can use cbind()
+neighborhood <- c("Lakewood", "Brentwood", "Lakewood", "Scenic Heights")
+hbirds <- cbind(hbirds, neighborhood)
+hbirds
+
+
 ```{r}
 hbirds$neighborhood <- c("Lakewood", "Brentwood", "Lakewood", "Scenic Heights")
 hbirds
@@ -112,8 +126,12 @@ hbirds
 
 ## Writing Data to File
 We should save our hbirds data frame so we can use it again later! There are many ways to save data in R, here we write our data frame to a csv file. We use  `row.names = FALSE` to avoid row numbers from printing out. 
+```{r} 
+write.csv(hbirds, "data/hbirds_data.csv", row.names = FALSE)
+```
+
 ```{r}
-write.csv(hbirds, "hbirds_data.csv", row.names = FALSE)
+getwd()
 ```
 
 ## Practice
@@ -126,27 +144,31 @@ spring <- c("Buckeye", "Buckeye", "Buckeye", "Benton", "Benton", "Benton", "Trav
 
 1. Build a data frame called `hsprings` with the above data. Name the temperature column `temp_C`. Print out the data frame.  
 ```{r}
-
+hsprings <- data.frame(spring, temp_C = temp, name)
+hsprings
 ```
 
 2. Change the column titled `name` to `scientist`, leave the other column names the same. Print out the data frame names.  
 ```{r}
-
+hsprings <- data.frame (spring, temp_C = temp, scientist = name)
+hsprings
 ```
 
 3. Our scientists forgot to record the depth data for each spring. Here it is as a vector, add it as a new column called depth_ft: `c(4.15, 4.13, 4.12, 3.21, 3.23, 3.20, 5.67, 5.65, 5.66)`. Print out the data frame.
 ```{r}
-
+hsprings$depth_ft <- c(4.15, 4.13, 4.12, 3.21, 3.23, 3.20, 5.67, 5.65, 5.66)
+hsprings
 ```
 
 4. Calculate the mean temperature of all of the temperature measurements.
 ```{r}
-
+w <- hsprings$temp_C
+mean(w)
 ```
 
 5. Save your hot springs data as a `.csv` file! Do not allow row names. 
 ```{r}
-
+write.csv(hsprings, "data/hsprings_data.csv", row.names = FALSE)
 ```
 
 ## That's it! Take a break and I will see you on Zoom!  
