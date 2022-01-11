@@ -45,12 +45,20 @@ Here we open a .csv file. Since we are using the tidyverse, we open the file usi
 
 In the previous part of the lab, you exported a `.csv` of hot springs data. Let's try to reload that `.csv`.  
 ```{r}
-hot_springs <- readr::read_csv("hsprings_data.csv")
+hot_springs <- readr::read_csv("data/hsprings_data.csv")
 ```
 
 Use the `str()` function to get an idea of the data structure of `hot_springs`.  
 ```{r}
 str(hot_springs)
+```
+
+```{r}
+spec(hot_springs)
+```
+
+```{r}
+glimpse(hot_springs)
 ```
 
 What is the class of the scientist column? Change it to factor and then show the levels of that factor.  
@@ -145,7 +153,11 @@ Subset is a way of pulling out observations that meet specific criteria in a var
 ## Practice
 1. Load the data `mammal_lifehistories_v2.csv` and place it into a new object called `mammals`.
 ```{r}
+getwd()
+```
 
+```{r}
+mammals <- readr::read_csv("data/mammal_lifehistories_v2.csv")
 ```
 
 2. Provide the dimensions of the data frame.
