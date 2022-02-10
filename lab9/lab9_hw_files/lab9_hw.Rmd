@@ -27,7 +27,7 @@ library(naniar)
 
 For this homework, we will take a departure from biological data and use data about California colleges. These data are a subset of the national college scorecard (https://collegescorecard.ed.gov/data/). Load the `ca_college_data.csv` as a new object called `colleges`.
 ```{r}
-college <- readr::read_csv("data/ca_college_data.csv")
+college <- readr::read_csv("~/Desktop/BIS 015L/BIS15W2022_sbian/lab9/data/ca_college_data.csv")
 ```
 
 The variables are a bit hard to decipher, here is a key:  
@@ -122,6 +122,13 @@ college %>%
 uc_institution <- college %>% 
   filter(grepl("University of California", instnm))
 ```
+
+```{r}
+univ_calif <- college %>% 
+  filter_all(any_vars(str_detect(., pattern = "University of California")))
+univ_calif
+```
+
 
 Remove `Hastings College of Law` and `UC San Francisco` and store the final data frame as a new object `univ_calif_final`.
 ```{r}

@@ -1,7 +1,7 @@
 ---
 title: "Lab 9 Homework"
 author: "Shuyi Bian"
-date: "2022-02-05"
+date: "2022-02-08"
 output:
   html_document: 
     theme: spacelab
@@ -27,7 +27,7 @@ library(naniar)
 For this homework, we will take a departure from biological data and use data about California colleges. These data are a subset of the national college scorecard (https://collegescorecard.ed.gov/data/). Load the `ca_college_data.csv` as a new object called `colleges`.
 
 ```r
-college <- readr::read_csv("data/ca_college_data.csv")
+college <- readr::read_csv("~/Desktop/BIS 015L/BIS15W2022_sbian/lab9/data/ca_college_data.csv")
 ```
 
 ```
@@ -248,6 +248,31 @@ uc_institution <- college %>%
   filter(grepl("University of California", instnm))
 ```
 
+
+```r
+univ_calif <- college %>% 
+  filter_all(any_vars(str_detect(., pattern = "University of California")))
+univ_calif
+```
+
+```
+## # A tibble: 10 × 10
+##    instnm      city  stabbr zip   adm_rate sat_avg pcip26 costt4_a c150_4_pooled
+##    <chr>       <chr> <chr>  <chr>    <dbl>   <dbl>  <dbl>    <dbl>         <dbl>
+##  1 University… La J… CA     92093    0.357    1324  0.216    31043         0.872
+##  2 University… Irvi… CA     92697    0.406    1206  0.107    31198         0.876
+##  3 University… Rive… CA     92521    0.663    1078  0.149    31494         0.73 
+##  4 University… Los … CA     9009…    0.180    1334  0.155    33078         0.911
+##  5 University… Davis CA     9561…    0.423    1218  0.198    33904         0.850
+##  6 University… Sant… CA     9506…    0.578    1201  0.193    34608         0.776
+##  7 University… Berk… CA     94720    0.169    1422  0.105    34924         0.916
+##  8 University… Sant… CA     93106    0.358    1281  0.108    34998         0.816
+##  9 University… San … CA     9410…   NA          NA NA           NA        NA    
+## 10 University… San … CA     9414…   NA          NA NA           NA        NA    
+## # … with 1 more variable: pftftug1_ef <dbl>
+```
+
+
 Remove `Hastings College of Law` and `UC San Francisco` and store the final data frame as a new object `univ_calif_final`.
 
 ```r
@@ -299,7 +324,7 @@ univ_calif_final %>%
   coord_flip()
 ```
 
-![](lab9_hw_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+![](lab9_hw_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
 10. If you wanted to get a degree in biological or biomedical sciences, which campus confers the majority of these degrees? Produce a numerical summary and an appropriate plot.
 
@@ -331,6 +356,6 @@ univ_calif_final %>%
   coord_flip()
 ```
 
-![](lab9_hw_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
+![](lab9_hw_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 
 ## Knit Your Output and Post to [GitHub](https://github.com/FRS417-DataScienceBiologists)
