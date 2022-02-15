@@ -1,7 +1,7 @@
 ---
 title: "Lab 11 Homework"
 author: "Shuyi Bian"
-date: "2022-02-11"
+date: "2022-02-15"
 output:
   html_document: 
     theme: spacelab
@@ -158,8 +158,8 @@ gapminder %>%
 gapminder %>% 
   group_by(year, continent) %>% 
   summarize(mean_lifeExp = mean(lifeExp)) %>% 
-  ggplot(aes(x=as.factor(year), y=mean_lifeExp, fill=continent))+
-  geom_col(position = "dodge")+
+  ggplot(aes(x=year, y=mean_lifeExp, color=continent))+
+  geom_line()+
   theme_linedraw()+
   scale_fill_brewer(palette = "Pastel1")+
   labs(title = "Mean Life Expectancy Change by Continents",
