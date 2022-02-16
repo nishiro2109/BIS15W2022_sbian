@@ -1,7 +1,7 @@
 ---
 title: "Lab 11 Homework"
 author: "Shuyi Bian"
-date: "2022-02-15"
+date: "2022-02-16"
 output:
   html_document: 
     theme: spacelab
@@ -141,16 +141,34 @@ gapminder %>%
 
 ```r
 gapminder %>% 
-  ggplot(aes(x=as.factor(year), y=lifeExp, fill = continent))+
-  geom_boxplot()+
-  scale_fill_brewer(palette = "Pastel1")+
-  labs(title = "Life Expectancy by Continents",
-       x=NULL,
-       y="life expectancy")+
-  theme(plot.title = element_text(size = rel(1.5), hjust = 0.5))
+  group_by(year, continent) %>% 
+  summarize(max_lifeExp = max(lifeExp),
+            mean_lifeExp = mean(lifeExp),
+            min_lifeExp = min(lifeExp))
 ```
 
-![](lab11_hw_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+```
+## `summarise()` has grouped output by 'year'. You can override using the
+## `.groups` argument.
+```
+
+```
+## # A tibble: 60 × 5
+## # Groups:   year [12]
+##     year continent max_lifeExp mean_lifeExp min_lifeExp
+##    <int> <fct>           <dbl>        <dbl>       <dbl>
+##  1  1952 Africa           52.7         39.1        30  
+##  2  1952 Americas         68.8         53.3        37.6
+##  3  1952 Asia             65.4         46.3        28.8
+##  4  1952 Europe           72.7         64.4        43.6
+##  5  1952 Oceania          69.4         69.3        69.1
+##  6  1957 Africa           58.1         41.3        31.6
+##  7  1957 Americas         70.0         56.0        40.7
+##  8  1957 Asia             67.8         49.3        30.3
+##  9  1957 Europe           73.5         66.7        48.1
+## 10  1957 Oceania          70.3         70.3        70.3
+## # … with 50 more rows
+```
 
 **5. How has life expectancy changed between 1952-2007 for each continent?**
 
@@ -275,8 +293,9 @@ gapminder %>%
 ```r
 gapminder %>% 
   filter(country == "Kuwait"|country == "Singapore"|country == "Norway"|country == "Hongkong, China"|country == "Ireland") %>% 
-  ggplot(aes(x=as.factor(year), y=lifeExp, fill=country))+
-  geom_col()+
+  ggplot(aes(x=year, y=lifeExp, color=country))+
+  geom_line()+
+  facet_wrap(~country, ncol=2)+ 
   theme_linedraw()+
   scale_fill_brewer(palette = "Pastel1")+
   labs(title = "Top 5 GDP Growth Countries' Life Expactancy Change",
