@@ -180,32 +180,35 @@ life_long %>%
 
 3. (2 points) Let's limit the data to 100 years (1920-2020). For these years, which country has the highest average life expectancy? How about the lowest average life expectancy?  
 
-Andorra has the highest average life expectancy, which is 79.8 years old; Central African Republic has the lowest average life expectancy, which is 41.77 years old.
+Andorra has the highest average life expectancy, which is 79.77 years old; Central African Republic has the lowest average life expectancy, which is 41.77 years old.
 
 ```r
 life_long %>% 
   filter(year>= "1920" & year <= "2020") %>% 
   group_by(country) %>% 
-  summarize(avg_life_exp = mean(life_value, na.rm = T)) %>% 
-  #arrange(desc(avg_life_exp))
-  arrange(avg_life_exp)
+  summarize(avg_life_exp = mean(life_value, na.rm=T)) %>% 
+  arrange(desc(avg_life_exp))
 ```
 
 ```
 ## # A tibble: 187 × 2
-##    country                  avg_life_exp
-##    <chr>                           <dbl>
-##  1 Central African Republic         41.8
-##  2 Mali                             41.8
-##  3 Ethiopia                         42.6
-##  4 Sierra Leone                     42.6
-##  5 Guinea-Bissau                    42.6
-##  6 Burundi                          42.8
-##  7 Malawi                           42.8
-##  8 Uganda                           43.3
-##  9 Eritrea                          43.4
-## 10 Yemen                            43.6
+##    country     avg_life_exp
+##    <chr>              <dbl>
+##  1 Andorra             79.8
+##  2 Sweden              73.5
+##  3 Norway              73.2
+##  4 Netherlands         73.0
+##  5 Dominica            73.0
+##  6 Iceland             72.9
+##  7 Australia           72.7
+##  8 Switzerland         72.7
+##  9 Denmark             71.9
+## 10 Canada              71.8
 ## # … with 177 more rows
+```
+
+```r
+  #arrange(avg_life_exp)
 ```
 
 4. (3 points) Although we can see which country has the highest life expectancy for the past 100 years, we don't know which countries have changed the most. What are the top 5 countries that have experienced the biggest improvement in life expectancy between 1920-2020?  

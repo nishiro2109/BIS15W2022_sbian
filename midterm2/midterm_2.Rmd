@@ -84,14 +84,14 @@ life_long %>%
 
 3. (2 points) Let's limit the data to 100 years (1920-2020). For these years, which country has the highest average life expectancy? How about the lowest average life expectancy?  
 
-Andorra has the highest average life expectancy, which is 79.8 years old; Central African Republic has the lowest average life expectancy, which is 41.77 years old.
+Andorra has the highest average life expectancy, which is 79.77 years old; Central African Republic has the lowest average life expectancy, which is 41.77 years old.
 ```{r}
 life_long %>% 
   filter(year>= "1920" & year <= "2020") %>% 
   group_by(country) %>% 
-  summarize(avg_life_exp = mean(life_value, na.rm = T)) %>% 
-  #arrange(desc(avg_life_exp))
-  arrange(avg_life_exp)
+  summarize(avg_life_exp = mean(life_value, na.rm=T)) %>% 
+  arrange(desc(avg_life_exp))
+  #arrange(avg_life_exp)
 ```
 
 4. (3 points) Although we can see which country has the highest life expectancy for the past 100 years, we don't know which countries have changed the most. What are the top 5 countries that have experienced the biggest improvement in life expectancy between 1920-2020?  
