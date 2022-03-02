@@ -3,7 +3,7 @@ title: "Lab 14 HW"
 output: 
   html_document: 
     keep_md: yes
-author: "your name here"
+author: "Shuyi Bian"
 date: '2022-02-28'
 ---
 
@@ -112,29 +112,127 @@ beachbugs_long <- readr::read_csv("data/beachbugs_long.csv")
 Clean up the column names (no capitals, not spaces) of `superhero_info`, then use 2 functions to remind yourself of structure of the `superhero_info` data set.
 
 
+```r
+superhero_info <- clean_names(superhero_info)
+```
+
+
+```r
+head(superhero_info)
+```
+
+```
+## # A tibble: 6 × 10
+##   name   gender eye_color race  hair_color height publisher skin_color alignment
+##   <chr>  <chr>  <chr>     <chr> <chr>       <dbl> <chr>     <chr>      <chr>    
+## 1 A-Bomb Male   yellow    Human No Hair       203 Marvel C… <NA>       good     
+## 2 Abe S… Male   blue      Icth… No Hair       191 Dark Hor… blue       good     
+## 3 Abin … Male   blue      Unga… No Hair       185 DC Comics red        good     
+## 4 Abomi… Male   green     Huma… No Hair       203 Marvel C… <NA>       bad      
+## 5 Abrax… Male   blue      Cosm… Black          NA Marvel C… <NA>       bad      
+## 6 Absor… Male   blue      Human No Hair       193 Marvel C… <NA>       bad      
+## # … with 1 more variable: weight <dbl>
+```
+
+```r
+glimpse(superhero_info)
+```
+
+```
+## Rows: 734
+## Columns: 10
+## $ name       <chr> "A-Bomb", "Abe Sapien", "Abin Sur", "Abomination", "Abraxas…
+## $ gender     <chr> "Male", "Male", "Male", "Male", "Male", "Male", "Male", "Ma…
+## $ eye_color  <chr> "yellow", "blue", "blue", "green", "blue", "blue", "blue", …
+## $ race       <chr> "Human", "Icthyo Sapien", "Ungaran", "Human / Radiation", "…
+## $ hair_color <chr> "No Hair", "No Hair", "No Hair", "No Hair", "Black", "No Ha…
+## $ height     <dbl> 203, 191, 185, 203, NA, 193, NA, 185, 173, 178, 191, 188, 1…
+## $ publisher  <chr> "Marvel Comics", "Dark Horse Comics", "DC Comics", "Marvel …
+## $ skin_color <chr> NA, "blue", "red", NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ alignment  <chr> "good", "good", "good", "bad", "bad", "bad", "good", "good"…
+## $ weight     <dbl> 441, 65, 90, 441, NA, 122, NA, 88, 61, 81, 104, 108, 90, 90…
+```
 
 ### 2.
 Are bad guys bigger? Make box-plots of weight by `alignment` (alignment on the x-axis).
 
+```r
+superhero_info %>% 
+  filter(alignment != "NA") %>% 
+  ggplot(aes(x = alignment, y = weight, fill = alignment))+
+  geom_boxplot(na.rm = TRUE)+
+  theme_linedraw()+
+  scale_fill_brewer(palette = "Pastel1")+
+  labs(x="alignment",
+       y="weight")
+```
+
+![](lab14_hw_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 ### 3. 
 Now, make a violin plot of weight by `alignment` (alignment on the x-axis). Add some color!
   What information can you observe in the violin plot that was not visible in the boxplot?
 
+```r
+superhero_info %>% 
+  filter(alignment != "NA") %>% 
+  ggplot(aes(x = alignment, y = weight, fill = alignment))+
+  geom_violin(na.rm = TRUE)+
+  theme_linedraw()+
+  scale_fill_brewer(palette = "Pastel1")+
+  labs(x="alignment",
+       y="weight")
+```
 
+![](lab14_hw_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
 
+```r
+#I can see the distribution of weight.
+```
 
 ### 4. 
 Use `alpha = .5` in `geom_boxplot()` and `geom_violin()` to layer both plots on top of one another. What does this tell you about the distribution of weight in "`bad`" guys?
 
+```r
+superhero_info %>% 
+  filter(alignment != "NA") %>% 
+  ggplot(aes(x = alignment, y = weight, fill = alignment))+
+  geom_violin(alpha=0.5, na.rm = TRUE)+
+  geom_boxplot(alpha=0.5, color = "grey", na.rm = TRUE)+
+  theme_linedraw()+
+  scale_fill_brewer(palette = "Pastel1")+
+  labs(x="alignment",
+       y="weight")
+```
+
+![](lab14_hw_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
+```r
+# There are many bad guys' weight is close to mean value.
+```
 
 ### 5. 
 Box plots are great for showing how the distribution of a numeric variable (e.g. weight) varies among a categorical variable (e.g. alignment).
   Make your own violin plot with the superhero data. 
-  What is your numeric data? 
-  What is your categorical variable?
+  What is your numeric data? Height
+  What is your categorical variable? Gender
 
+```r
+superhero_info %>% 
+  filter(gender !="NA") %>% 
+  ggplot(aes(x=gender, y=height, fill=gender))+
+  geom_boxplot(alpha=0.5, color="grey", na.rm = TRUE)+
+  geom_violin(alpha=0.5, na.rm = TRUE)+
+  theme_linedraw()+
+  scale_fill_brewer(palette = "Pastel1")+
+  labs(title = "Superhero Gender vs. Height",
+       x="gender",
+       y="height")+
+    theme(plot.title = element_text(size = rel(1.5), hjust = 0.5))+
+  coord_flip()
+```
 
+![](lab14_hw_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 ### 6. 
 Remind yourself what `beachbugs` looks like. Then generate a heatmap of buglevels by site and year. 
@@ -142,8 +240,34 @@ color it with `scale_fill_gradient(low="yellow", high="red")` or colors of your 
 (dont forget, `coord_flip()` is a quick way to improve the look of your plot if you dont like the default orientation)
 
 
+```r
+head(beachbugs_long)
+```
+
+```
+## # A tibble: 6 × 3
+##    year site               buglevels
+##   <dbl> <chr>                  <dbl>
+## 1  2013 Bondi Beach            32.2 
+## 2  2013 Bronte Beach           26.8 
+## 3  2013 Clovelly Beach          9.28
+## 4  2013 Coogee Beach           39.7 
+## 5  2013 Gordons Bay (East)     24.8 
+## 6  2013 Little Bay Beach      122.
+```
 
 
+```r
+beachbugs_long %>% 
+  ggplot(aes(x=site, y=year, fill=buglevels))+
+  geom_tile()+
+  scale_fill_gradient(low="yellow", high="red")+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))+
+  labs(x = "Site",
+       y = NULL)
+```
+
+![](lab14_hw_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 ### 7.  
 Use the provided code to normalize the beachbug data set. 
@@ -206,6 +330,21 @@ beachbugs_normalized
 ```
  
 
+```r
+beachbugs_normalized %>% 
+  ggplot(aes(x=site, y=year, fill=norm_buglevel))+
+  geom_tile()+
+  scale_fill_gradient(low="yellow", high="red")+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))+
+  labs(x = "Site",
+       y = NULL)
+```
+
+![](lab14_hw_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
+```r
+# I think this is better because there are more color differences in this heatmap.
+```
 
 ### 8.
 Let's make a venn diagram of `superhero_info`, from 4 questions:
@@ -219,24 +358,30 @@ Start by making the 4 vectors, then the list of vectors. The vector for alignmen
 
 ```r
 # evil
-
-#evil_vec <- superhero_info %>%
-#  filter(alignment == "bad")%>%
-#  pull(name)
+evil_vec <- superhero_info %>%
+  filter(alignment == "bad")%>%
+  pull(name)
 
 # red eyes
-
+red_eye_vec <- superhero_info %>% 
+  filter(eye_color == "red") %>% 
+  pull(name)
 
 # male
-
+male_vec <- superhero_info %>% 
+  filter(gender == "Male") %>% 
+  pull(name)
 
 # bald
+bald_vec <- superhero_info %>% 
+  filter(hair_color == "No Hair") %>% 
+  pull(name)
 ```
 
 Your list of vectors will look something like this:
 
 ```r
-# questions_list <- list(evil_vec, red_eye_vec, male_vec, bald_vec)
+evil_redeye_male_bald_list <- list(evil_vec, red_eye_vec, male_vec, bald_vec)
 ```
 
 ### 9. 
@@ -245,18 +390,127 @@ Let's make the venn diagram! use the code from lab as a reference.
 ```r
 # something like:
 # ggVennDiagram( list, category.names = c("name", "name", "name", "name"))
+
+ggVennDiagram(evil_redeye_male_bald_list, category.names = c("Evil", "Red Eye", "Male", "Bald"))
 ```
+
+![](lab14_hw_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
 
 
 ### 10. Choose one intersection of the venn diagram that is interesting to you. Use dplyr to find the names of the superheros in that intersection. 
 
 
+```r
+superhero_info %>% 
+  filter(gender == "Male" & hair_color != "No Hair" & eye_color !="red" & alignment !="bad") %>% 
+  pull(name)
+```
+
+```
+##   [1] "Adam Monroe"       "Adam Strange"      "Agent Bob"        
+##   [4] "Alan Scott"        "Alfred Pennyworth" "Angel"            
+##   [7] "Animal Man"        "Ant-Man"           "Ant-Man II"       
+##  [10] "Aquababy"          "Aqualad"           "Aquaman"          
+##  [13] "Archangel"         "Ares"              "Astro Boy"        
+##  [16] "Atlas"             "Atom"              "Atom II"          
+##  [19] "Atom IV"           "Azrael"            "Banshee"          
+##  [22] "Bantam"            "Batman"            "Batman"           
+##  [25] "Batman II"         "Battlestar"        "Beak"             
+##  [28] "Beast"             "Beast Boy"         "Bizarro"          
+##  [31] "Black Bolt"        "Black Knight III"  "Black Panther"    
+##  [34] "Blade"             "Blue Beetle"       "Blue Beetle II"   
+##  [37] "Blue Beetle III"   "Booster Gold"      "Brainiac 5"       
+##  [40] "Brother Voodoo"    "Cable"             "Cannonball"       
+##  [43] "Captain America"   "Captain Atom"      "Captain Britain"  
+##  [46] "Captain Cold"      "Captain Epic"      "Captain Mar-vell" 
+##  [49] "Captain Marvel"    "Captain Marvel II" "Century"          
+##  [52] "Chamber"           "Citizen Steel"     "Cloak"            
+##  [55] "Colin Wagner"      "Colossus"          "Corsair"          
+##  [58] "Crimson Crusader"  "Cyborg"            "Cyclops"          
+##  [61] "Danny Cooper"      "Daredevil"         "Darkhawk"         
+##  [64] "Dash"              "Data"              "Deadman"          
+##  [67] "Deathlok"          "Deathstroke"       "Doc Samson"       
+##  [70] "Doctor Fate"       "Doctor Strange"    "Elongated Man"    
+##  [73] "Ethan Hunt"        "Falcon"            "Firestorm"        
+##  [76] "Firestorm"         "Flash"             "Flash II"         
+##  [79] "Flash IV"          "Franklin Richards" "Galactus"         
+##  [82] "Genesis"           "Gladiator"         "Goliath IV"       
+##  [85] "Gravity"           "Green Arrow"       "Green Goblin IV"  
+##  [88] "Guardian"          "Guy Gardner"       "Hal Jordan"       
+##  [91] "Han Solo"          "Hancock"           "Harry Potter"     
+##  [94] "Havok"             "Hawkeye"           "Hawkman"          
+##  [97] "Hellboy"           "Hercules"          "Howard the Duck"  
+## [100] "Hulk"              "Human Torch"       "Hybrid"           
+## [103] "Hyperion"          "Iceman"            "Impulse"          
+## [106] "Iron Fist"         "Iron Man"          "Jack of Hearts"   
+## [109] "Jack-Jack"         "James Bond"        "James T. Kirk"    
+## [112] "John Constantine"  "John Stewart"      "John Wraith"      
+## [115] "Juggernaut"        "Justice"           "Karate Kid"       
+## [118] "Kick-Ass"          "Kid Flash"         "King Kong"        
+## [121] "Krypto"            "Kyle Rayner"       "Legion"           
+## [124] "Lightning Lad"     "Longshot"          "Luke Cage"        
+## [127] "Luke Skywalker"    "Magog"             "Man-Bat"          
+## [130] "Man-Wolf"          "Master Brood"      "Master Chief"     
+## [133] "Maverick"          "Metron"            "Micah Sanders"    
+## [136] "Micro Lad"         "Mimic"             "Mister Fantastic" 
+## [139] "Monarch"           "Moon Knight"       "Mr Immortal"      
+## [142] "Mr Incredible"     "Multiple Man"      "Namor"            
+## [145] "Nick Fury"         "Nightcrawler"      "Nightwing"        
+## [148] "Northstar"         "Nova"              "Odin"             
+## [151] "Omniscient"        "Osiris"            "Penance II"       
+## [154] "Plastic Man"       "Punisher"          "Question"         
+## [157] "Quicksilver"       "Quill"             "Rambo"            
+## [160] "Ray"               "Red Arrow"         "Red Hood"         
+## [163] "Red Hulk"          "Red Robin"         "Rip Hunter"       
+## [166] "Robin"             "Robin II"          "Robin III"        
+## [169] "Robin V"           "Rocket Raccoon"    "Ronin"            
+## [172] "Rorschach"         "Sandman"           "Scarlet Spider"   
+## [175] "Scarlet Spider II" "Sentry"            "Shang-Chi"        
+## [178] "Shatterstar"       "Simon Baz"         "Sinestro"         
+## [181] "Skaar"             "Spawn"             "Spider-Man"       
+## [184] "Spider-Man"        "Spock"             "Spyke"            
+## [187] "Star-Lord"         "Static"            "Sunspot"          
+## [190] "Superboy"          "Superman"          "Synch"            
+## [193] "The Comedian"      "Thor"              "Thunderbird"      
+## [196] "Thunderbird III"   "Thunderstrike"     "Toad"             
+## [199] "Toxin"             "Toxin"             "Vibe"             
+## [202] "Vulcan"            "War Machine"       "Warpath"          
+## [205] "Winter Soldier"    "Wolverine"         "Wyatt Wingfoot"   
+## [208] "X-Man"             "Yellowjacket"      "Yoda"
+```
 
 
 
 ### 11. Make another venn diagram with the `superhero_info` data. What are your questions? ( At least 2!) 
+Is their alignment good? 
+Are their eyes blue?
+Are they from Marvel Comics?
+
+```r
+# good
+good_vec <- superhero_info %>%
+  filter(alignment == "good")%>%
+  pull(name)
+
+# blue eyes
+blue_eye_vec <- superhero_info %>% 
+  filter(eye_color == "blue") %>% 
+  pull(name)
+
+# Marvel
+marvel_vec <- superhero_info %>% 
+  filter(publisher == "Marvel Comics") %>% 
+  pull(name)
+```
 
 
+```r
+good_blueeye_marvel_list <- list(good_vec, blue_eye_vec, marvel_vec)
+
+ggVennDiagram(good_blueeye_marvel_list, category.names = c("Good", "Blue Eye", "Marvel"))
+```
+
+![](lab14_hw_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
 
 ### 12.
@@ -316,6 +570,19 @@ power_frequency
 
 
 
+```r
+power_frequency %>% 
+ggplot(aes(
+  label = power, 
+  size = freq,
+  color = power
+  )) +
+  geom_text_wordcloud() +
+  scale_size_area(max_size = 8) +
+  theme_minimal()
+```
+
+![](lab14_hw_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
 ### 13.  
 Who are some very powerful supers? 
  Lets make a different word cloud with the `superhero_powers` data. 
@@ -379,6 +646,25 @@ power_quantity
 
 
 
+```r
+power_quantity %>% 
+ggplot(aes(
+  label = hero_names, 
+  size = sum_powers,
+  color = hero_names
+  )) +
+  geom_text_wordcloud() +
+  scale_size_area(max_size = 8) +
+  theme_minimal()
+```
+
+```
+## Warning in wordcloud_boxes(data_points = points_valid_first, boxes = boxes, :
+## Some words could not fit on page. They have been placed at their original
+## positions.
+```
+
+![](lab14_hw_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
 
 ## That's it! 🎉
 Thanks for coding with us all winter! 
