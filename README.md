@@ -12,11 +12,12 @@ A psychology major, japanese minor senior student at UC Davis.
 Recent hobby: playing nintendo switch games :D
 
 Recent worries: no graduate program offers, sad
-March 1st update: I got an offer!!
+
+[March 1st update: I got an offer!!]
 
 ## My Goal in This Class
 Become an RStudio master.
 
-March 1st update: Want to learn more about RStudio and use that in my graduate study.
+[March 1st update: Want to learn more about RStudio and use that in my graduate study.]
 
 ## Thank you🎉
